@@ -26,4 +26,10 @@ var verifyLocalStorageIsEmpty = function(namespace) {
   }
 };
 
-export { verifyLocalStorageContainsRecord, verifyLocalStorageIsEmpty };
+function op(op, path, value){
+  var operation = {op: op, path: path};
+  if(value) operation.value = value;
+  return operation;
+}
+
+export { verifyLocalStorageContainsRecord, verifyLocalStorageIsEmpty, op };

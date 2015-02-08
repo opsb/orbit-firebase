@@ -1,7 +1,7 @@
 # orbit-builds
 
-Distributable builds for [orbit.js](https://github.com/orbitjs/orbit.js).
+Distributable builds for [orbit-firebase](https://github.com/opsb/orbit-firebase).
 
 ## Copyright and License
 
-Copyright 2014 Cerebris Corporation. MIT License (see LICENSE for details).
+Copyright 2015 Lytbulb. MIT License (see LICENSE for details).

@@ -12,26 +12,30 @@ var version = gitVersion().replace(/^v/, '');
 
 var packages = [
   {
-    name: 'orbit',
-    include: [/orbit.js/,
-              /(orbit\/.+.js)/]
-  },
-  {
-    name: 'orbit-common',
-    include: [/orbit-common.js/,
-              /(orbit\-common\/.+.js)/],
-    exclude: [/orbit-common\/local-storage-source.js/,
-              /orbit-common\/jsonapi-serializer.js/,
-              /orbit-common\/jsonapi-source.js/]
-  },
-  {
-    name: 'orbit-common-local-storage',
-    include: [/orbit-common\/local-storage-source.js/]
-  },
-  {
-    name: 'orbit-common-jsonapi',
-    include: [/orbit-common\/jsonapi-serializer.js/,
-              /orbit-common\/jsonapi-source.js/]
+    name: 'orbit-firebase',
+    include: [/orbit-firebase\/cache-utils.js/,
+              /orbit-firebase\/array-utils.js/,
+              /orbit-firebase\/object-utils.js/,
+              /orbit-firebase\/firebase-cache.js/,
+              /orbit-firebase\/firebase-client.js/,
+              /orbit-firebase\/firebase-serializer.js/,
+              /orbit-firebase\/firebase-transformer.js/,
+              /orbit-firebase\/firebase-requester.js/,
+              /orbit-firebase\/firebase-source.js/,
+              /orbit-firebase\/firebase-utils.js/,
+              /orbit-firebase\/operation-decomposer.js/,
+              /orbit-firebase\/operation-matcher.js/,
+              /orbit-firebase\/schema-utils.js/,
+              /orbit-firebase\/transformers\/add-record.js/,
+              /orbit-firebase\/transformers\/remove-record.js/,
+              /orbit-firebase\/transformers\/replace-attribute.js/,
+              /orbit-firebase\/transformers\/add-to-has-many.js/,
+              /orbit-firebase\/transformers\/add-to-has-one.js/,
+              /orbit-firebase\/transformers\/remove-has-one.js/,
+              /orbit-firebase\/transformers\/replace-has-many.js/,
+              /orbit-firebase\/transformers\/remove-from-has-many.js/,
+              /orbit-firebase\/transformers\/update-meta.js/,
+              /orbit-firebase\/firebase-operation-queues.js/]
   }
 ];
 
@@ -130,7 +134,10 @@ mainWithTests = concat(new compileES6(mainWithTests), {
 var vendor = concat('bower_components', {
   inputFiles: [
     'jquery/dist/jquery.js',
-    'rsvp/rsvp.js'],
+    'rsvp/rsvp.js',
+    'firebase/firebase-debug.js',
+    'orbit.js/orbit.amd.js',
+    'orbit.js/orbit-common.amd.js'],
   outputFile: '/assets/vendor.js'
 });
 

@@ -1,26 +1,26 @@
 {
-  "name": "orbit.js",
+  "name": "orbit-firebase",
   "private": true,
-  "version": "0.5.5",
-  "namespace": "Orbit",
-  "description": "A standalone library for data access and synchronization",
-  "homepage": "https://github.com/orbitjs/orbit.js",
+  "version": "0.1.0",
+  "namespace": "OF",
+  "description": "firebase adapter for orbit.js",
+  "homepage": "https://github.com/opsb/orbit-firebase.js",
   "readmeFilename": "README.md",
   "author": {
-    "name": "Cerebris Corporation",
-    "url": "http://cerebris.com"
+    "name": "Oliver Searle-Barnes",
+    "url": "http://github.com/opsb"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/orbitjs/orbit.js.git"
+    "url": "git://github.com/opsb/orbit-firebase.git"
   },
   "bugs": {
-    "url": "https://github.com/orbitjs/orbit.js/issues"
+    "url": "https://github.com/opsb/orbit-firebase/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/orbitjs/orbit.js/blob/master/LICENSE"
+      "url": "https://github.com/opsb/orbit-firebase/blob/master/LICENSE"
     }
   ],
   "main": "Brocfile.js",
@@ -35,6 +35,7 @@
   "devDependencies": {
     "bower": "^1.3.12",
     "broccoli": "^0.13.0",
+    "broccoli-babel-transpiler": "^4.0.1",
     "broccoli-cli": "0.0.1",
     "broccoli-es6modules": "^0.4.0",
     "broccoli-funnel": "^0.1.6",

@@ -2,13 +2,13 @@
   "name": "orbit.js",
   "version": "VERSION_PLACEHOLDER",
   "author": {
-    "name": "Cerebris Corporation",
-    "url": "http://cerebris.com"
+    "name": "Lytbulb",
+    "url": "http://lytbulb.com"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/orbitjs/orbit.js/blob/master/LICENSE"
+      "url": "https://github.com/opsb/orbit-firebase/blob/master/LICENSE"
     }
   ],
   "ignore": [ ],
