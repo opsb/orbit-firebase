@@ -27,7 +27,7 @@ module("Integration - Firebase / Memory (Blocking)", {
     var schema = new Schema({
       modelDefaults: {
         keys: {
-          '__id': {primaryKey: true, defaultValue: uuid}
+          'id': {primaryKey: true, defaultValue: uuid}
         }
       },
       models: {
@@ -84,6 +84,24 @@ function nextEventPromise(emitter, event){
   });
 }
 
+function captureOperation(source, count, logOperations){
+  return new Promise(function(resolve, reject){
+    var operations = [];
+
+    source.on("didTransform", function(operation){
+      operations.push(operation);
+
+      if(logOperations){
+        console.log("operation " + operations.length + ": ", operation);
+      }
+      
+      if(operations.length === count){
+        resolve(operation);
+      }
+    });
+  });
+}
+
 test("add to memory source should be synced with firebase source automatically", function() {
   expect(4);
 
@@ -108,7 +126,7 @@ test("add to memory source should be synced with firebase source automatically",
   });
 });
 
-test("add to memory store operation is synchronised to other firebase store", function(){
+test("add record to memory store operation is synchronised with other firebase store", function(){
   stop();
 
   var operation = new Operation({
@@ -128,7 +146,43 @@ test("add to memory store operation is synchronised to other firebase store", fu
   });
 });
 
+test("when link is added to a hasOne in the memory store operation is synchronised with other firebase store", function(){
+  stop();
 
+  otherFirebaseSource._firebaseOperationQueues.subscribeToType("planet");
+  otherFirebaseSource._firebaseOperationQueues.subscribeToType("moon");
+
+  var planet = memorySource.normalize('planet', {name: 'Jupiter'})
+  var addPlanetOp = new Operation({
+    op: 'add',
+    path: ['planet', planet.id],
+    value: planet
+  });
+
+  var moon = memorySource.normalize('moon', {name: 'Titan'})
+  var addMoonOp = new Operation({
+    op: 'add',
+    path: ['moon', moon.id],
+    value: moon
+  });
+
+  var linkMoonToPlanetOp = new Operation({
+    op: 'add',
+    path: ['moon', moon.id, '__rel', 'planet'],
+    value: planet.id
+  });
+
+  var receiveTransformations = captureOperation(otherFirebaseSource, 3, true);
+
+  memorySource.transform(addPlanetOp);
+  memorySource.transform(addMoonOp);
+  memorySource.transform(linkMoonToPlanetOp);
+
+  receiveTransformations.then(function(receivedOperation){
+    start();
+    deepEqual(receivedOperation, linkMoonToPlanetOp, 'operations matched');
+  }); 
+});
 
 
 
