@@ -71,7 +71,15 @@ module("Integration - Firebase / Memory (Blocking)", {
   },
 
   teardown: function() {
+    firebaseSource._firebaseOperationQueues.unsubscribeAll();
+    otherFirebaseSource._firebaseOperationQueues.unsubscribeAll();
     firebaseRef = firebaseSource = memorySource = null;
+    stop();
+
+    // allow for firebase events to settle
+    setTimeout(function(){
+      start();
+    }, 100);
   }
 });
 
@@ -84,9 +92,13 @@ function nextEventPromise(emitter, event){
   });
 }
 
-function captureOperation(source, count, logOperations){
+function captureDidTransform(source, count, logOperations){
   return new Promise(function(resolve, reject){
     var operations = [];
+
+    var timeout = setTimeout(function(){
+      reject("Failed to receive " + count + " operations");
+    }, 1500);
 
     source.on("didTransform", function(operation){
       operations.push(operation);
@@ -96,6 +108,7 @@ function captureOperation(source, count, logOperations){
       }
       
       if(operations.length === count){
+        clearTimeout(timeout);
         resolve(operation);
       }
     });
@@ -172,7 +185,7 @@ test("when link is added to a hasOne in the memory store operation is synchronis
     value: planet.id
   });
 
-  var receiveTransformations = captureOperation(otherFirebaseSource, 3, true);
+  var receiveTransformations = captureDidTransform(otherFirebaseSource, 3, true);
 
   memorySource.transform(addPlanetOp);
   memorySource.transform(addMoonOp);
@@ -184,7 +197,43 @@ test("when link is added to a hasOne in the memory store operation is synchronis
   }); 
 });
 
+test("when link is added to a hasMany in the memory store operation is synchronised with other firebase store", function(){
+  stop();
 
+  otherFirebaseSource._firebaseOperationQueues.subscribeToType("planet");
+  otherFirebaseSource._firebaseOperationQueues.subscribeToType("moon");
+
+  var planet = memorySource.normalize('planet', {name: 'Jupiter'})
+  var addPlanetOp = new Operation({
+    op: 'add',
+    path: ['planet', planet.id],
+    value: planet
+  });
+
+  var moon = memorySource.normalize('moon', {name: 'Titan'})
+  var addMoonOp = new Operation({
+    op: 'add',
+    path: ['moon', moon.id],
+    value: moon
+  });
+
+  var linkPlanetToMoonOp = new Operation({
+    op: 'add',
+    path: ['planet', planet.id, '__rel', 'moons', moon.id],
+    value: true
+  });
+
+  var receiveTransformations = captureDidTransform(otherFirebaseSource, 3, true);
+
+  memorySource.transform(addPlanetOp);
+  memorySource.transform(addMoonOp);
+  memorySource.transform(linkPlanetToMoonOp);
+
+  receiveTransformations.then(function(receivedOperation){
+    start();
+    deepEqual(receivedOperation, linkPlanetToMoonOp, 'operations matched');
+  }); 
+});
 
 
 
