@@ -1,7 +1,5 @@
-# orbit-firebase-builds
+# orbit-firebase
 
-Distributable builds for [orbit-firebase](https://github.com/opsb/orbit-firebase).
+firebase adapter for orbit.js
 
-## Copyright and License
-
-Copyright 2014 Lytbulb. MIT License (see LICENSE for details).
+WARNING this is very much a WIP!
