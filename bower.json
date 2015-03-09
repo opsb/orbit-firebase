@@ -1,6 +1,6 @@
 {
-  "name": "orbit.js",
-  "version": "0.1.0.d6c816ad",
+  "name": "orbit-firebase",
+  "version": "0.1.0-alpha",
   "author": {
     "name": "Lytbulb",
     "url": "http://lytbulb.com"
@@ -12,8 +12,9 @@
     }
   ],
   "ignore": [ ],
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "orbit.js": "0.6.0"
+  },
+  "devDependencies": {
   }
 }
