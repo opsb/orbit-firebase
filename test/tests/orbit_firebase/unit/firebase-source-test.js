@@ -7,6 +7,7 @@ import FirebaseSource from 'orbit-firebase/firebase-source';
 import FirebaseClient from 'orbit-firebase/firebase-client';
 import { Promise, all, hash, denodeify,resolve, on, defer, map } from 'rsvp';
 import { isArray } from 'orbit/lib/objects';
+import { nextEventPromise, captureOperations } from 'tests/test-helper';
 
 on('error', function(reason){
   console.log(reason);
@@ -67,33 +68,6 @@ module("OC - FirebaseSource", {
 
   }
 });
-
-function nextEventPromise(emitter, event){
-  return new Promise(function(resolve, fail){
-    emitter.one(event, 
-      function(operation){ resolve(operation); },
-      function(error){ fail(error); }
-    );
-  });
-}
-
-function captureOperations(source, count, logOperations){
-  return new Promise(function(resolve, reject){
-    var operations = [];
-
-    source.on("didTransform", function(operation){
-      operations.push(operation);
-
-      if(logOperations){
-        console.log("operation " + operations.length + ": ", operation);
-      }
-      
-      if(operations.length === count){
-        resolve(operation);
-      }
-    });
-  });
-}
 
 test("#add - can add record", function(){
   expect(7);

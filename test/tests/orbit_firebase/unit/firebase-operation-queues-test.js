@@ -4,17 +4,9 @@ import Orbit from 'orbit/main';
 import Operation from 'orbit/operation';
 import { all, Promise, resolve } from 'rsvp';
 import FirebaseClient from 'orbit-firebase/firebase-client';
+import { op, nextEventPromise, captureDidTransform } from 'tests/test-helper';
 
 var firebaseOperationQueues;
-
-function nextEventPromise(emitter, event){
-  return new Promise(function(resolve, fail){
-    emitter.one(event, 
-      function(operation){ resolve(operation); },
-      function(error){ fail(error); }
-    );
-  });
-}
 
 module("OC - FirebaseOperationQueues", {
   setup: function() {

@@ -1,4 +1,4 @@
-/* global Firebase, clearTimeout */
+/* global Firebase */
 import Orbit from 'orbit/main';
 import Operation from 'orbit/operation';
 import { uuid } from 'orbit/lib/uuid';
@@ -8,7 +8,7 @@ import FirebaseSource from 'orbit-firebase/firebase-source';
 import TransformConnector from 'orbit/transform-connector';
 import { Promise, all, hash, denodeify,resolve, on, defer, map } from 'rsvp';
 import jQuery from 'jquery';
-import { verifyLocalStorageContainsRecord } from 'tests/test-helper';
+import { op, nextEventPromise, captureDidTransform } from 'tests/test-helper';
 
 var memorySource,
     firebaseSource,
@@ -84,37 +84,7 @@ module("Integration - Firebase / Memory (Blocking)", {
   }
 });
 
-function nextEventPromise(emitter, event){
-  return new Promise(function(resolve, fail){
-    emitter.one(event, 
-      function(operation){ resolve(operation); },
-      function(error){ fail(error); }
-    );
-  });
-}
 
-function captureDidTransform(source, count, logOperations){
-  return new Promise(function(resolve, reject){
-    var operations = [];
-
-    var timeout = setTimeout(function(){
-      reject("Failed to receive " + count + " operations");
-    }, 1500);
-
-    source.on("didTransform", function(operation){
-      operations.push(operation);
-
-      if(logOperations){
-        console.log("operation " + operations.length + ": ", operation);
-      }
-      
-      if(operations.length === count){
-        clearTimeout(timeout);
-        resolve(operation);
-      }
-    });
-  });
-}
 
 test("add to memory source should be synced with firebase source automatically", function() {
   expect(4);

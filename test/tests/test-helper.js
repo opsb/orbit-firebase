@@ -1,30 +1,4 @@
-var verifyLocalStorageContainsRecord = function(namespace, type, id, record, ignoreFields) {
-  var expected = {};
-  expected[id] = record;
-
-  var actual = JSON.parse(window.localStorage.getItem(namespace));
-  if (type) actual = actual[type];
-
-  if (ignoreFields) {
-    for (var i = 0, l = ignoreFields.length, field; i < l; i++) {
-      field = ignoreFields[i];
-      actual[id][field] = record[field];
-    }
-  }
-
-  deepEqual(actual,
-            expected,
-            'data in local storage matches expectations');
-};
-
-var verifyLocalStorageIsEmpty = function(namespace) {
-  var contents = JSON.parse(window.localStorage.getItem(namespace));
-  if (contents === null) {
-    equal(contents, null, 'local storage should still be empty');
-  } else {
-    deepEqual(contents, {}, 'local storage should still be empty');
-  }
-};
+/* global clearTimeout */
 
 function op(op, path, value){
   var operation = {op: op, path: path};
@@ -32,4 +6,36 @@ function op(op, path, value){
   return operation;
 }
 
-export { verifyLocalStorageContainsRecord, verifyLocalStorageIsEmpty, op };
+function nextEventPromise(emitter, event){
+  return new Promise(function(resolve, fail){
+    emitter.one(event, 
+      function(operation){ resolve(operation); },
+      function(error){ fail(error); }
+    );
+  });
+}
+
+function captureDidTransform(source, count, logOperations){
+  return new Promise(function(resolve, reject){
+    var operations = [];
+
+    var timeout = setTimeout(function(){
+      reject("Failed to receive " + count + " operations");
+    }, 1500);
+
+    source.on("didTransform", function(operation){
+      operations.push(operation);
+
+      if(logOperations){
+        console.log("operation " + operations.length + ": ", operation);
+      }
+      
+      if(operations.length === count){
+        clearTimeout(timeout);
+        resolve(operation);
+      }
+    });
+  });
+}
+
+export { nextEventPromise, op, captureDidTransform };
