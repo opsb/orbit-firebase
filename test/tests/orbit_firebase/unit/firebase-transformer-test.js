@@ -1,3 +1,4 @@
+/* global Firebase */
 import Orbit from 'orbit/main';
 import Operation from 'orbit/operation';
 import { uuid } from 'orbit/lib/uuid';
@@ -113,7 +114,7 @@ test("can remove record", function(){
 
   firebaseTransformer.transform(op('add', 'planet/1', {name: "Jupiter"}))
   .then(function(){
-    return firebaseTransformer.transform(op('remove', 'planet/1'))
+    return firebaseTransformer.transform(op('remove', 'planet/1'));
 
   })
   .then(function(){
@@ -131,7 +132,7 @@ test("can replace attribute", function(){
 
   firebaseTransformer.transform(op('add', 'planet/1', {name: "Jupiter"}))
   .then(function(){
-    return firebaseTransformer.transform(op('replace', 'planet/1/name', 'Saturn'))
+    return firebaseTransformer.transform(op('replace', 'planet/1/name', 'Saturn'));
 
   })
   .then(function(){
@@ -149,7 +150,7 @@ test("can add attribute", function(){
 
   firebaseTransformer.transform(op('add', 'planet/1', {name: "Jupiter"}))
   .then(function(){
-    return firebaseTransformer.transform(op('add', 'planet/1/name', 'Saturn'))
+    return firebaseTransformer.transform(op('add', 'planet/1/name', 'Saturn'));
 
   })
   .then(function(){
@@ -172,7 +173,7 @@ test("add link - set hasOne", function(){
 
   firebaseTransformer.transform(op('add', 'moon/1', {name: "Titan"}))
   .then(function(){
-    return firebaseTransformer.transform(op('add', 'moon/1/__rel/planet', planetId))
+    return firebaseTransformer.transform(op('add', 'moon/1/__rel/planet', planetId));
 
   })
   .then(function(){
@@ -191,7 +192,7 @@ test("replace link - replace hasOne", function(){
 
   firebaseTransformer.transform(op('add', 'moon/1', {name: "Titan"}))
   .then(function(){
-    return firebaseTransformer.transform(op('replace', 'moon/1/__rel/planet', planetId))
+    return firebaseTransformer.transform(op('replace', 'moon/1/__rel/planet', planetId));
 
   })
   .then(function(){
@@ -210,7 +211,7 @@ test("remove link - remove hasOne", function(){
 
   firebaseTransformer.transform(op('add', 'moon/1', {name: "Titan"}))
   .then(function(){
-    return firebaseTransformer.transform(op('remove', 'moon/1/__rel/planet'))
+    return firebaseTransformer.transform(op('remove', 'moon/1/__rel/planet'));
 
   })
   .then(function(){
@@ -300,7 +301,7 @@ test("add link - add to hasMany", function(){
 
   firebaseTransformer.transform(op('add', 'planet/1', {name: "Jupiter"}))
   .then(function(){
-    return firebaseTransformer.transform(op('add', 'planet/1/__rel/moons/3', true))
+    return firebaseTransformer.transform(op('add', 'planet/1/__rel/moons/3', true));
 
   })
   .then(function(){
@@ -319,7 +320,7 @@ test("replace link - set hasMany", function(){
 
   firebaseTransformer.transform(op('add', 'moon/1', {name: "Titan"}))
   .then(function(){
-    return firebaseTransformer.transform(op('replace', 'planet/1/__rel/moons', moonIds))
+    return firebaseTransformer.transform(op('replace', 'planet/1/__rel/moons', moonIds));
 
   })
   .then(function(){
@@ -338,11 +339,11 @@ test("remove link - remove from a hasMany", function(){
 
   firebaseTransformer.transform(op('add', 'moon/1', {name: "Titan"}))
   .then(function(){
-    return firebaseTransformer.transform(op('replace', 'planet/1/__rel/moons', moonIds))
+    return firebaseTransformer.transform(op('replace', 'planet/1/__rel/moons', moonIds));
 
   })
   .then(function(){
-    return firebaseTransformer.transform(op('remove', 'planet/1/__rel/moons/abc1'))    
+    return firebaseTransformer.transform(op('remove', 'planet/1/__rel/moons/abc1'));
   })
   .then(function(){
     firebaseClient.valueAt('planet/1/moons').then(function(firebaseMoons){

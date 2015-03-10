@@ -1,3 +1,4 @@
+/* global Firebase */
 import Orbit from 'orbit/main';
 import { uuid } from 'orbit/lib/uuid';
 import Schema from 'orbit-common/schema';
@@ -113,9 +114,9 @@ test("find - all", function(){
   var jupiter = {id: "abc1", name: "Jupiter"};
   var saturn = {id: "abc2", name: "Saturn"};
 
-  firebaseClient.set('planet/abc1', jupiter)
+  firebaseClient.set('planet/abc1', jupiter);
+  
   firebaseClient.set('planet/abc2', saturn)
-
   .then(function(){
     firebaseRequester.find('planet').then(function(planets){
       start();

@@ -21,7 +21,6 @@ var packages = [
               /orbit-firebase\/firebase-transformer.js/,
               /orbit-firebase\/firebase-requester.js/,
               /orbit-firebase\/firebase-source.js/,
-              /orbit-firebase\/firebase-utils.js/,
               /orbit-firebase\/operation-decomposer.js/,
               /orbit-firebase\/operation-matcher.js/,
               /orbit-firebase\/schema-utils.js/,

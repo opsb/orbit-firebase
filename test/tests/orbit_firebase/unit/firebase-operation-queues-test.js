@@ -1,3 +1,4 @@
+/* global Firebase */
 import FirebaseOperationQueues from 'orbit-firebase/firebase-operation-queues';
 import Orbit from 'orbit/main';
 import Operation from 'orbit/operation';
@@ -11,7 +12,7 @@ function nextEventPromise(emitter, event){
     emitter.one(event, 
       function(operation){ resolve(operation); },
       function(error){ fail(error); }
-    )
+    );
   });
 }
 

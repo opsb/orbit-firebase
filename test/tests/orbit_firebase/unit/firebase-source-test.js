@@ -1,3 +1,4 @@
+/* global Firebase */
 import Orbit from 'orbit/main';
 import { uuid } from 'orbit/lib/uuid';
 import Schema from 'orbit-common/schema';
@@ -64,7 +65,7 @@ module("OC - FirebaseSource", {
           function(error){ reject(error); }
         );
       });
-    }
+    };
 
     source = new FirebaseSource(schema, {firebaseRef: firebaseRef});
     firebaseClient = new FirebaseClient(firebaseRef);
@@ -82,7 +83,7 @@ function nextEventPromise(emitter, event){
     emitter.one(event, 
       function(operation){ resolve(operation); },
       function(error){ fail(error); }
-    )
+    );
   });
 }
 
@@ -144,7 +145,7 @@ test("#patch - can patch records", function() {
       start();
       equal(snapshot.val(), 'iceball');
       equal(source.retrieve(["planet", planet.id]).classification, 'iceball');
-    })
+    });
   });
 });
 
@@ -219,8 +220,8 @@ test("#addLink - can add to hasMany", function() {
 
   var titan, saturn, fbTitan, fbSaturn;
   all([
-    source.add('planet', {name: "Saturn"}).then(function(sourceSaturn){saturn = sourceSaturn}),
-    source.add('moon', {name: "Titan"}).then(function(sourceTitan){titan = sourceTitan}),
+    source.add('planet', {name: "Saturn"}).then(function(sourceSaturn){saturn = sourceSaturn;}),
+    source.add('moon', {name: "Titan"}).then(function(sourceTitan){titan = sourceTitan;}),
   ])
   .then(function(){
     return source.addLink('planet', saturn.id, 'moons', titan.id);
@@ -229,7 +230,7 @@ test("#addLink - can add to hasMany", function() {
     return all([
       firebaseClient.valueAt('moon/' + titan.id).then(function(titan){ fbTitan = titan; }),
       firebaseClient.valueAt('planet/' + saturn.id).then(function(saturn){ fbSaturn = saturn; }),
-    ])
+    ]);
   })
   .then(function(){
     start();
@@ -245,8 +246,8 @@ test('#addLink - can set hasOne link', function(){
   var titan, saturn, fbTitan, fbSaturn;
 
   all([
-    source.add('planet', {name: "Saturn"}).then(function(sourceSaturn){saturn = sourceSaturn}),
-    source.add('moon', {name: "Titan"}).then(function(sourceTitan){titan = sourceTitan}),
+    source.add('planet', {name: "Saturn"}).then(function(sourceSaturn){saturn = sourceSaturn;}),
+    source.add('moon', {name: "Titan"}).then(function(sourceTitan){titan = sourceTitan;}),
   ])
   .then(function(){
     return source.addLink('moon', titan.id, 'planet', saturn.id);
@@ -268,8 +269,8 @@ test("#removeLink - can remove from a hasMany relationship", function() {
   var titan, saturn, fbTitan, fbSaturn;
 
   all([
-    source.add('planet', {name: "Saturn"}).then(function(sourceSaturn){saturn = sourceSaturn}),
-    source.add('moon', {name: "Titan"}).then(function(sourceTitan){titan = sourceTitan}),
+    source.add('planet', {name: "Saturn"}).then(function(sourceSaturn){saturn = sourceSaturn;}),
+    source.add('moon', {name: "Titan"}).then(function(sourceTitan){titan = sourceTitan;}),
   ])
   .then(function(){
     return source.addLink('planet', saturn.id, 'moons', titan.id);
@@ -281,7 +282,7 @@ test("#removeLink - can remove from a hasMany relationship", function() {
     return all([
       firebaseClient.valueAt('moon/' + titan.id).then(function(titan){ fbTitan = titan; }),
       firebaseClient.valueAt('planet/' + saturn.id).then(function(saturn){ fbSaturn = saturn; }),
-    ])
+    ]);
   })
   .then(function(){
     start();
@@ -329,8 +330,8 @@ test("#removeLink - can remove a hasOne relationship", function() {
   var titan, saturn, fbTitan, fbSaturn;
 
   all([
-    source.add('planet', {name: "Saturn"}).then(function(sourceSaturn){saturn = sourceSaturn}),
-    source.add('moon', {name: "Titan"}).then(function(sourceTitan){titan = sourceTitan}),
+    source.add('planet', {name: "Saturn"}).then(function(sourceSaturn){saturn = sourceSaturn;}),
+    source.add('moon', {name: "Titan"}).then(function(sourceTitan){titan = sourceTitan;}),
   ])
   .then(function(){
     return source.addLink('moon', titan.id, 'planet', saturn.id);
@@ -342,7 +343,7 @@ test("#removeLink - can remove a hasOne relationship", function() {
     return all([
       loadFirebaseValue('moon/' + titan.id).then(function(titan){ fbTitan = titan; }),
       loadFirebaseValue('planet/' + saturn.id).then(function(saturn){ fbSaturn = saturn; }),
-    ])
+    ]);
   })
   .then(function(){
     start();
@@ -361,8 +362,8 @@ test("#findLink - can find has-many linked ids", function() {
   var titan, saturn, fbTitan, fbSaturn;
 
   all([
-    source.add('planet', {name: "Saturn"}).then(function(sourceSaturn){saturn = sourceSaturn}),
-    source.add('moon', {name: "Titan"}).then(function(sourceTitan){titan = sourceTitan}),
+    source.add('planet', {name: "Saturn"}).then(function(sourceSaturn){saturn = sourceSaturn;}),
+    source.add('moon', {name: "Titan"}).then(function(sourceTitan){titan = sourceTitan;}),
   ])
   .then(function(){
     return source.addLink('planet', saturn.id, 'moons', titan.id);
@@ -382,8 +383,8 @@ test("#findLinked - can find has-many linked records", function() {
   var titan, saturn, fbTitan, fbSaturn;
 
   all([
-    source.add('planet', {name: "Saturn"}).then(function(sourceSaturn){saturn = sourceSaturn}),
-    source.add('moon', {name: "Titan"}).then(function(sourceTitan){titan = sourceTitan}),
+    source.add('planet', {name: "Saturn"}).then(function(sourceSaturn){saturn = sourceSaturn;}),
+    source.add('moon', {name: "Titan"}).then(function(sourceTitan){titan = sourceTitan;}),
   ])
   .then(function(){
     return source.addLink('planet', saturn.id, 'moons', titan.id);
@@ -403,8 +404,8 @@ test("#findLink - can find has-one linked id", function() {
   var titan, saturn, fbTitan, fbSaturn;
 
   all([
-    source.add('planet', {name: "Saturn"}).then(function(sourceSaturn){saturn = sourceSaturn}),
-    source.add('moon', {name: "Titan"}).then(function(sourceTitan){titan = sourceTitan}),
+    source.add('planet', {name: "Saturn"}).then(function(sourceSaturn){saturn = sourceSaturn;}),
+    source.add('moon', {name: "Titan"}).then(function(sourceTitan){titan = sourceTitan;}),
   ])
   .then(function(){
     return source.addLink('moon', titan.id, 'planet', saturn.id);
@@ -424,8 +425,8 @@ test("#findLinked - can find has-one linked record", function() {
   var titan, saturn, fbTitan, fbSaturn;
 
   all([
-    source.add('planet', {name: "Saturn"}).then(function(sourceSaturn){saturn = sourceSaturn}),
-    source.add('moon', {name: "Titan"}).then(function(sourceTitan){titan = sourceTitan}),
+    source.add('planet', {name: "Saturn"}).then(function(sourceSaturn){saturn = sourceSaturn;}),
+    source.add('moon', {name: "Titan"}).then(function(sourceTitan){titan = sourceTitan;}),
   ])
   .then(function(){
     return source.addLink('moon', titan.id, 'planet', saturn.id);

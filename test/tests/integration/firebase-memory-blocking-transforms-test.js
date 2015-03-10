@@ -1,3 +1,4 @@
+/* global Firebase, clearTimeout */
 import Orbit from 'orbit/main';
 import Operation from 'orbit/operation';
 import { uuid } from 'orbit/lib/uuid';
@@ -62,7 +63,7 @@ module("Integration - Firebase / Memory (Blocking)", {
     firebaseSource.id = 'firebase';
 
     otherFirebaseSource = new FirebaseSource(schema, {firebaseRef: firebaseRef});
-    otherFirebaseSource.id = 'otherFirebase'
+    otherFirebaseSource.id = 'otherFirebase';
 
     memoryToFirebaseConnector = new TransformConnector(memorySource, firebaseSource);
     firebaseToMemoryConnector = new TransformConnector(firebaseSource, memorySource);
@@ -88,7 +89,7 @@ function nextEventPromise(emitter, event){
     emitter.one(event, 
       function(operation){ resolve(operation); },
       function(error){ fail(error); }
-    )
+    );
   });
 }
 
@@ -165,14 +166,14 @@ test("when link is added to a hasOne in the memory store operation is synchronis
   otherFirebaseSource._firebaseOperationQueues.subscribeToType("planet");
   otherFirebaseSource._firebaseOperationQueues.subscribeToType("moon");
 
-  var planet = memorySource.normalize('planet', {name: 'Jupiter'})
+  var planet = memorySource.normalize('planet', {name: 'Jupiter'});
   var addPlanetOp = new Operation({
     op: 'add',
     path: ['planet', planet.id],
     value: planet
   });
 
-  var moon = memorySource.normalize('moon', {name: 'Titan'})
+  var moon = memorySource.normalize('moon', {name: 'Titan'});
   var addMoonOp = new Operation({
     op: 'add',
     path: ['moon', moon.id],
@@ -203,14 +204,14 @@ test("when link is added to a hasMany in the memory store operation is synchroni
   otherFirebaseSource._firebaseOperationQueues.subscribeToType("planet");
   otherFirebaseSource._firebaseOperationQueues.subscribeToType("moon");
 
-  var planet = memorySource.normalize('planet', {name: 'Jupiter'})
+  var planet = memorySource.normalize('planet', {name: 'Jupiter'});
   var addPlanetOp = new Operation({
     op: 'add',
     path: ['planet', planet.id],
     value: planet
   });
 
-  var moon = memorySource.normalize('moon', {name: 'Titan'})
+  var moon = memorySource.normalize('moon', {name: 'Titan'});
   var addMoonOp = new Operation({
     op: 'add',
     path: ['moon', moon.id],

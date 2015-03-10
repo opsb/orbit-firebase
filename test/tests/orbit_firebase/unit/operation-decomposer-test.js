@@ -33,21 +33,21 @@ function buildPlanet(properties){
     races: {},
     next: null,
     previous: null
-  }
+  };
   return properties;
 }
 
 function buildMoon(properties){
   properties.__rel = {
     planet: null
-  }
+  };
   return properties;
 }
 
 function buildRace(properties){
   properties.__rel = {
     planets: {}
-  }
+  };
   return properties;
 }
 
@@ -157,13 +157,8 @@ function op(op, path, value){
 }
 
 function associateMoonWithPlanet(moon, planet){
-  try {
-    cache.transform( op('add', ['planet', planet.id, "__rel", "moons", moon.id], true) );
-    cache.transform( op('add', ['moon', moon.id, "__rel", 'planet'], planet.id) );
-  } 
-  catch(error){
-    debugger
-  }
+  cache.transform( op('add', ['planet', planet.id, "__rel", "moons", moon.id], true) );
+  cache.transform( op('add', ['moon', moon.id, "__rel", 'planet'], planet.id) );
 }
 
 test('add to hasOne => hasMany', function(){
