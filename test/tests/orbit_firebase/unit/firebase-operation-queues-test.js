@@ -21,15 +21,14 @@ module("OC - FirebaseOperationQueues", {
   },
 
   teardown: function() {
-    console.log("tardown");
     firebaseOperationQueues.unsubscribeAll();
     firebaseOperationQueues = null;
   }
 });
 
-test("add record operation is added to record's queue", function(){
+test("add record operation is broadcast to record's subscribers", function(){
 	stop();
-	var operation = new Operation({ op: 'add', path: 'planet/abc1/__rel/moons/abc2', value: true, id: 'xyz123' });
+	var operation = new Operation({ op: 'add', path: 'planet/abc1', value: { id: "abc1" }, id: 'xyz123' });
 
 	firebaseOperationQueues.subscribeToRecord('planet', 'abc1');
 
@@ -42,7 +41,38 @@ test("add record operation is added to record's queue", function(){
 	});
 });
 
-test("add record operation is added to type's queue", function(){
+test("add link operation is broadcast to record's subscribers", function(){
+  stop();
+  var operation = new Operation({ op: 'add', path: 'planet/abc1/__rel/moons/abc2', value: true, id: 'xyz123' });
+
+  firebaseOperationQueues.subscribeToRecord('planet', 'abc1');
+
+  var didTransform = nextEventPromise(firebaseOperationQueues, "didTransform");
+  firebaseOperationQueues.enqueue(operation);
+
+  didTransform.then(function(broadcastedOperation){
+    start();
+    equal(broadcastedOperation.id, operation.id);
+  });
+});
+
+test("add record operation is broadcast to type's subscribers", function(){
+  expect(1);
+  stop();
+  var operation = new Operation({ op: 'add', path: 'planet/abc1', value: { id: "abc1" }, id: 'xyz123' });
+
+  firebaseOperationQueues.subscribeToType('planet');
+
+  var didTransform = nextEventPromise(firebaseOperationQueues, "didTransform");
+  firebaseOperationQueues.enqueue(operation);
+
+  didTransform.then(function(broadcastedOperation){
+    start();
+    equal(broadcastedOperation.id, operation.id);
+  });
+});
+
+test("add link operation is broadcast to type's subscribers", function(){
   expect(1);
   stop();
   var operation = new Operation({ op: 'add', path: 'planet/abc1/__rel/moons/abc2', value: true, id: 'xyz123' });
@@ -53,7 +83,6 @@ test("add record operation is added to type's queue", function(){
   firebaseOperationQueues.enqueue(operation);
 
   didTransform.then(function(broadcastedOperation){
-    console.log("got callback");
     start();
     equal(broadcastedOperation.id, operation.id);
   });

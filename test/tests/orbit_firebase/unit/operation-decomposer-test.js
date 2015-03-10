@@ -8,6 +8,7 @@ import OperationDecomposer from 'orbit-firebase/operation-decomposer';
 import FirebaseSource from 'orbit-firebase/firebase-source';
 import { Promise, all, hash, denodeify,resolve, on, defer } from 'rsvp';
 import { isArray, isObject } from 'orbit/lib/objects';
+import { op } from 'tests/test-helper';
 
 on('error', function(reason){
   console.log(reason);
@@ -148,12 +149,6 @@ function asHash(k,v){
   var hash = {};
   hash[k] = v;
   return hash;
-}
-
-function op(op, path, value){
-  var operation = new Operation({op: op, path: path});
-  if(value) operation.value = value;
-  return operation;
 }
 
 function associateMoonWithPlanet(moon, planet){

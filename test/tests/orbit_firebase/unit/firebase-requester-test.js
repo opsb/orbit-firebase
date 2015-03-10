@@ -13,17 +13,12 @@ import FirebaseClient from 'orbit-firebase/firebase-client';
 import FirebaseTransformer from 'orbit-firebase/firebase-transformer';
 
 import AddRecordTransformer from 'orbit-firebase/transformers/add-record';
+import { op } from 'tests/test-helper';
 
 on('error', function(reason){
   console.log(reason);
   console.error(reason.message, reason.stack);
 });
-
-function op(op, path, value){
-  var operation = {op: op, path: path};
-  if(value) operation.value = value;
-  return operation;
-}
 
 var schemaDefinition = {
   modelDefaults: {

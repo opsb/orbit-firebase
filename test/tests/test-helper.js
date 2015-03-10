@@ -1,7 +1,8 @@
 /* global clearTimeout */
+import Operation from 'orbit/operation';
 
-function op(op, path, value){
-  var operation = {op: op, path: path};
+function op(opType, path, value){
+  var operation = new Operation({op: opType, path: path});
   if(value) operation.value = value;
   return operation;
 }

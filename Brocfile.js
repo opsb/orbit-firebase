@@ -13,9 +13,11 @@ var version = gitVersion().replace(/^v/, '');
 var packages = [
   {
     name: 'orbit-firebase',
-    include: [/orbit-firebase\/cache-utils.js/,
-              /orbit-firebase\/array-utils.js/,
-              /orbit-firebase\/object-utils.js/,
+    include: [/orbit-firebase\/lib\/cache-utils.js/,
+              /orbit-firebase\/lib\/array-utils.js/,
+              /orbit-firebase\/lib\/object-utils.js/,
+              /orbit-firebase\/lib\/operation-utils.js/,
+              /orbit-firebase\/lib\/schema-utils.js/,
               /orbit-firebase\/firebase-client.js/,
               /orbit-firebase\/firebase-serializer.js/,
               /orbit-firebase\/firebase-transformer.js/,
@@ -23,7 +25,6 @@ var packages = [
               /orbit-firebase\/firebase-source.js/,
               /orbit-firebase\/operation-decomposer.js/,
               /orbit-firebase\/operation-matcher.js/,
-              /orbit-firebase\/schema-utils.js/,
               /orbit-firebase\/transformers\/add-record.js/,
               /orbit-firebase\/transformers\/remove-record.js/,
               /orbit-firebase\/transformers\/replace-attribute.js/,
