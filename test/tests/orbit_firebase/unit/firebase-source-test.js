@@ -16,7 +16,6 @@ on('error', function(reason){
 var schema,
     source,
     firebaseRef,
-    loadFirebaseValue,
     firebaseClient;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -57,15 +56,6 @@ module("OC - FirebaseSource", {
 
     firebaseRef = new Firebase("https://burning-torch-3002.firebaseio.com/test");
     firebaseRef.set(null);
-
-    loadFirebaseValue = function(path){
-      return new Orbit.Promise(function(resolve, reject){
-        firebaseRef.child(path).once('value', 
-          function(snapshot){ resolve(snapshot.val()); },
-          function(error){ reject(error); }
-        );
-      });
-    };
 
     source = new FirebaseSource(schema, {firebaseRef: firebaseRef});
     firebaseClient = new FirebaseClient(firebaseRef);
@@ -341,8 +331,8 @@ test("#removeLink - can remove a hasOne relationship", function() {
   })
   .then(function(){
     return all([
-      loadFirebaseValue('moon/' + titan.id).then(function(titan){ fbTitan = titan; }),
-      loadFirebaseValue('planet/' + saturn.id).then(function(saturn){ fbSaturn = saturn; }),
+      firebaseClient.valueAt('moon/' + titan.id).then(function(titan){ fbTitan = titan; }),
+      firebaseClient.valueAt('planet/' + saturn.id).then(function(saturn){ fbSaturn = saturn; }),
     ]);
   })
   .then(function(){
