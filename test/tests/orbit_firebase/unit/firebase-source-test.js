@@ -9,11 +9,6 @@ import { Promise, all, hash, denodeify,resolve, on, defer, map } from 'rsvp';
 import { isArray } from 'orbit/lib/objects';
 import { nextEventPromise, captureOperations } from 'tests/test-helper';
 
-on('error', function(reason){
-  console.log(reason);
-  console.error(reason.message, reason.stack);
-});
-
 var schema,
     source,
     firebaseRef,

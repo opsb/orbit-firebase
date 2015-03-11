@@ -17,7 +17,12 @@ var memorySource,
     firebaseRef,
     otherFirebaseSource;
 
-module("Integration - Firebase / Memory (Blocking)", {
+    on('error', function(reason){
+  console.log(reason);
+  console.error(reason.message, reason.stack);
+});
+
+module("Integration - Memory / Firebase", {
   setup: function() {
     Orbit.Promise = Promise;
     Orbit.all = all;
@@ -72,8 +77,8 @@ module("Integration - Firebase / Memory (Blocking)", {
   },
 
   teardown: function() {
-    firebaseSource._firebaseOperationQueues.unsubscribeAll();
-    otherFirebaseSource._firebaseOperationQueues.unsubscribeAll();
+    firebaseSource.disconnect();
+    otherFirebaseSource.disconnect();
     firebaseRef = firebaseSource = memorySource = null;
     stop();
 
@@ -119,12 +124,12 @@ test("add record to memory store operation is synchronised with other firebase s
     value: memorySource.normalize('planet', {name: 'Jupiter'})
   });
 
-  otherFirebaseSource._firebaseOperationQueues.subscribeToType("planet");
-  var didTransformOtherFirebaseSource = nextEventPromise(otherFirebaseSource, "didTransform");
+  otherFirebaseSource._firebaseListener.subscribeToType("planet");
+  var receiveOperation = captureDidTransform(otherFirebaseSource, 1);
 
   memorySource.transform(operation);
 
-  didTransformOtherFirebaseSource.then(function(receivedOperation){
+  receiveOperation.then(function(receivedOperation){
     start();
     deepEqual(receivedOperation, operation, 'operations matched');
   });
@@ -133,8 +138,8 @@ test("add record to memory store operation is synchronised with other firebase s
 test("when link is added to a hasOne in the memory store operation is synchronised with other firebase store", function(){
   stop();
 
-  otherFirebaseSource._firebaseOperationQueues.subscribeToType("planet");
-  otherFirebaseSource._firebaseOperationQueues.subscribeToType("moon");
+  otherFirebaseSource._firebaseListener.subscribeToType("planet");
+  otherFirebaseSource._firebaseListener.subscribeToType("moon");
 
   var planet = memorySource.normalize('planet', {name: 'Jupiter'});
   var addPlanetOp = new Operation({
@@ -156,7 +161,7 @@ test("when link is added to a hasOne in the memory store operation is synchronis
     value: planet.id
   });
 
-  var receiveTransformations = captureDidTransform(otherFirebaseSource, 3, true);
+  var receiveTransformations = captureDidTransform(otherFirebaseSource, 3);
 
   memorySource.transform(addPlanetOp);
   memorySource.transform(addMoonOp);
@@ -171,8 +176,8 @@ test("when link is added to a hasOne in the memory store operation is synchronis
 test("when link is added to a hasMany in the memory store operation is synchronised with other firebase store", function(){
   stop();
 
-  otherFirebaseSource._firebaseOperationQueues.subscribeToType("planet");
-  otherFirebaseSource._firebaseOperationQueues.subscribeToType("moon");
+  otherFirebaseSource._firebaseListener.subscribeToType("planet");
+  otherFirebaseSource._firebaseListener.subscribeToType("moon");
 
   var planet = memorySource.normalize('planet', {name: 'Jupiter'});
   var addPlanetOp = new Operation({
@@ -194,7 +199,7 @@ test("when link is added to a hasMany in the memory store operation is synchroni
     value: true
   });
 
-  var receiveTransformations = captureDidTransform(otherFirebaseSource, 3, true);
+  var receiveTransformations = captureDidTransform(otherFirebaseSource, 3);
 
   memorySource.transform(addPlanetOp);
   memorySource.transform(addMoonOp);

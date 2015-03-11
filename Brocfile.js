@@ -19,10 +19,13 @@ var packages = [
               /orbit-firebase\/lib\/operation-utils.js/,
               /orbit-firebase\/lib\/schema-utils.js/,
               /orbit-firebase\/firebase-client.js/,
+              /orbit-firebase\/firebase-connector.js/,
               /orbit-firebase\/firebase-serializer.js/,
               /orbit-firebase\/firebase-transformer.js/,
               /orbit-firebase\/firebase-requester.js/,
               /orbit-firebase\/firebase-source.js/,
+              /orbit-firebase\/firebase-listener.js/,
+              /orbit-firebase\/eager-relationship-loader.js/,
               /orbit-firebase\/operation-decomposer.js/,
               /orbit-firebase\/operation-matcher.js/,
               /orbit-firebase\/transformers\/add-record.js/,
@@ -33,8 +36,7 @@ var packages = [
               /orbit-firebase\/transformers\/remove-has-one.js/,
               /orbit-firebase\/transformers\/replace-has-many.js/,
               /orbit-firebase\/transformers\/remove-from-has-many.js/,
-              /orbit-firebase\/transformers\/update-meta.js/,
-              /orbit-firebase\/firebase-operation-queues.js/]
+              /orbit-firebase\/transformers\/update-meta.js/]
   }
 ];
 
