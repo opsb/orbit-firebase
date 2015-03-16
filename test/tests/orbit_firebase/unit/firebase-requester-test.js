@@ -6,7 +6,7 @@ import Source from 'orbit-common/source';
 import FirebaseSource from 'orbit-firebase/firebase-source';
 import FirebaseSerializer from 'orbit-firebase/firebase-serializer';
 import FirebaseRequester from 'orbit-firebase/firebase-requester';
-import { Promise, all, hash, denodeify,resolve, on, defer } from 'rsvp';
+import { Promise, all, hash, denodeify,resolve, on, defer, map } from 'rsvp';
 import { isArray } from 'orbit/lib/objects';
 
 import FirebaseClient from 'orbit-firebase/firebase-client';
@@ -68,6 +68,7 @@ module("OC - FirebaseRequester", {
     Orbit.Promise = Promise;
     Orbit.all = all;
     Orbit.resolve = resolve;
+    Orbit.map = map;
 
     var schema = new Schema(schemaDefinition);
 
